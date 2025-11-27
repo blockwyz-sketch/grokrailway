@@ -132,7 +132,7 @@ export default function Chat() {
         <div className="profile">
           <img src={logo} alt="logo" className="profile-logo" />
           <div className="profile-title">Grokkern</div>
-          <div className="profile-sub">Angry AI — hati²</div>
+          <div className="profile-sub">Angry Intellegence</div>
         </div>
 
         <button className="btn primary" onClick={saveSession}>Save Conversation</button>
