@@ -5,7 +5,10 @@
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "dist", "buildCommand": "npm ci && npm run build" }
+      "config": {
+        "distDir": "dist",
+        "buildCommand": "npm ci && node ./node_modules/vite/bin/vite.js build"
+      }
     }
   ],
   "routes": [
