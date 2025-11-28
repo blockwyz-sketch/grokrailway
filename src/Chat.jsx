@@ -104,8 +104,14 @@ export default function Chat() {
 
       let msg = "Server error. Something pissed me off.";
 
-      if (err.response?.data?.assistant) msg = err.response.data.assistant;
-      else if (err.response?.data?.error) msg = err.response.data.error;
+      if (err.response?.data?.assistant) {
+        msg = err.response.data.assistant;
+      } else {
+        const errorText = err.response?.data?.error;
+        const details = err.response?.data?.details;
+        if (errorText || details) msg = [errorText, details].filter(Boolean).join(': ');
+        else if (err.message) msg = err.message;
+      }
 
       setMessages(prev => [...prev, { role: "assistant", content: msg }]);
     } finally {
