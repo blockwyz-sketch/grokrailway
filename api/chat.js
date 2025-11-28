@@ -77,6 +77,10 @@ async function callProvider({ messages, provider, model, openrouterKey, openaiKe
   if (provider === "openrouter") {
     apiURL = "https://openrouter.ai/api/v1/chat/completions";
     headers = { Authorization: `Bearer ${openrouterKey}`, "Content-Type": "application/json" };
+    const referer = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined;
+    const siteName = process.env.SITE_NAME || undefined;
+    if (referer) headers["HTTP-Referer"] = referer;
+    if (siteName) headers["X-Title"] = siteName;
   } else {
     apiURL = "https://api.openai.com/v1/chat/completions";
     headers = { Authorization: `Bearer ${openaiKey}`, "Content-Type": "application/json" };
@@ -93,7 +97,10 @@ async function callProvider({ messages, provider, model, openrouterKey, openaiKe
     throw new Error(`Non-JSON response (${resp.status}): ${text}`);
   }
 
-  if (!resp.ok) throw new Error(`Provider error ${resp.status}: ${json.error || text}`);
+  if (!resp.ok) {
+    const errObj = typeof json.error === "string" ? json.error : JSON.stringify(json.error);
+    throw new Error(`Provider error ${resp.status}: ${errObj}`);
+  }
   return json;
 }
 
