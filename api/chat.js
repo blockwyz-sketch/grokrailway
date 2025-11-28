@@ -1,10 +1,5 @@
-// api/chat.js
-require("dotenv").config();
-
-// Fetch polyfill buat Node <18
-if (typeof fetch === "undefined") {
-  global.fetch = require("node-fetch");
-}
+import dotenv from "dotenv";
+dotenv.config();
 
 const threatPatterns = [
   /\bkill\b/i,
@@ -182,4 +177,4 @@ async function handler(req, res) {
   }
 }
 
-module.exports = handler;
+export default handler;
