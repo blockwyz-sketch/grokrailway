@@ -69,7 +69,7 @@ export default function Landing() {
   onClick={() => open("https://twitter.com/i/communities/1994012484131557685")}
 />
 
-            <i className="bi bi-telegram social-icon" title="Telegram" onClick={() => open("#")} />
+          
           </div>
           <div className="social-title">Gorkern NETWORK</div>
         </section>
