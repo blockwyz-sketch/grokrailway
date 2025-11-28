@@ -43,7 +43,10 @@ export default function Landing() {
 
             <p className="hero-copy">
               Gorkern cuts the useless parts and serves direct answers — fast, blunt,
-              and with attitude. If you want sugar, go elsewhere.
+              and with attitude. If you want sugar, go elsewhere.<br>
+                CA : 2gCD8imDRAwhQ8RFAnideE2TvXBeKQZNgvzFXP3ypump
+              </br>
+            
             </p>
 
             <div className="hero-ctas">
