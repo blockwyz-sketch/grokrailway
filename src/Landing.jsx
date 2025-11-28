@@ -94,8 +94,8 @@ export default function Landing() {
               </p>
 
               <div className="story-meta">
-                <span className="meta-key">contact</span>
-                <span className="meta-value">&nbsp;: team@grokkern.ai</span>
+                <span className="meta-key">X</span>
+                <span className="meta-value">&nbsp;:@Gorkernn</span>
                 <span className="meta-badge">&nbsp;&lt;follow&gt;</span>
               </div>
             </article>
@@ -144,7 +144,7 @@ export default function Landing() {
       </main>
 
       <footer className="landing-footer">
-        <small>Grokkern — Angry Intelligence • © {new Date().getFullYear()}</small>
+        <small>Gorkern — Angry Intelligence • © {new Date().getFullYear()}</small>
       </footer>
     </div>
   );
