@@ -80,6 +80,7 @@ async function callProvider({ messages, provider, model, openrouterKey, openaiKe
     const referer = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined;
     const siteName = process.env.SITE_NAME || undefined;
     if (referer) headers["HTTP-Referer"] = referer;
+    if (referer) headers["Referer"] = referer;
     if (siteName) headers["X-Title"] = siteName;
   } else {
     apiURL = "https://api.openai.com/v1/chat/completions";
@@ -158,6 +159,9 @@ async function handler(req, res) {
     if (provider === "openai" && !OPENAI_API_KEY)
       return res.status(500).json({ error: "OPENAI_API_KEY not set" });
 
+    if (provider === "openrouter" && OPENROUTER_API_KEY && !/^sk-or-/.test(OPENROUTER_API_KEY))
+      return res.status(500).json({ error: "OPENROUTER_API_KEY invalid format" });
+
     const data = await callProvider({
       messages: conversations[clientId],
       provider,
@@ -180,7 +184,22 @@ async function handler(req, res) {
     return res.json({ assistant: reply, messages: conversations[clientId] });
   } catch (err) {
     console.error("ERROR:", err);
-    return res.status(500).json({ error: "server_error", details: err.message });
+    const msg = String(err?.message || "");
+    const match = msg.match(/Provider error\s+(\d+)/);
+    if (match) {
+      const code = Number(match[1]);
+      if (code === 401) {
+        return res.status(502).json({ error: "provider_unauthorized", details: msg });
+      }
+      if (code === 429) {
+        return res.status(503).json({ error: "provider_rate_limited", details: msg });
+      }
+      if (code >= 400 && code < 500) {
+        return res.status(400).json({ error: "provider_client_error", details: msg });
+      }
+      return res.status(502).json({ error: "provider_error", details: msg });
+    }
+    return res.status(500).json({ error: "server_error", details: msg });
   }
 }
 
